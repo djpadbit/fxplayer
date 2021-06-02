@@ -39,16 +39,18 @@ Then to build for the calculator you simply do:
 ```
 make
 ```
-And send it to the calculator with
+And send it to the calculator with:
 ```
+# Uses p7
 make send
 ```
-There's also a desktop version of the reader to test it you can build with
+
+Then send the data to the calculator aswell.
+The data from the converter must be called "data.bin" on the calculator for it to work properly.
+
+There's also a desktop version of the reader to test it. You can build with:
 ```
 make reader
 # or if you want to see the images (it requires SDL2)
 make reader_sdl
 ```
-
-Then send the data to the calculator aswell.
-The data from the converter must be called "data.bin" on the calculator for it to work properly.
