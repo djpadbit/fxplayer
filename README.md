@@ -28,12 +28,12 @@ python conv.py <input> [output]
 (output defaults to data.bin)
 ```
 
-For the player on the calculator, you can build it with make, it requires gint. There are 2 version of it the monochrome one and the dct one.
-You need to select on of the two first with:
+For the player on the calculator, it requires gint and you can build it with make. There are 2 version of it the monochrome one and the dct one.
+You need to select one of the two first with:
 ```
-make switch_dct
-# or
 make switch_mono
+# or
+make switch_dct
 ```
 Then to build for the calculator you simply do:
 ```
