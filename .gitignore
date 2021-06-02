@@ -1,0 +1,14 @@
+media
+bad.elf
+bad.bin
+bad.g1a
+frames.bin
+frames_dec.bin
+reader
+reader_sdl
+reader.c
+reader_calc.c
+data.bin
+data/
+dct/
+saves/
