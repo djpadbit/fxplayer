@@ -25,7 +25,7 @@ const char *infile = "data.bin";
 #define STREAM_TEMP_SIZE 1024
 
 #define DITHERING
-//#define FLOYD_DITHERING
+#define FLOYD_DITHERING
 #define BAYER_WIDTH 4
 #define BAYER_HEIGHT 2
 
@@ -152,9 +152,17 @@ void dither_framebuffer()
 }
 #else
 #ifdef FLOYD_DITHERING
+
+static inline int32_t clamp(int32_t val, int32_t min, int32_t max)
+{
+	if (val > max) return max;
+	if (val < min) return min;
+	return val;
+}
+
 void dither_framebuffer()
 {
-	uint8_t quant_error = 0;
+	int32_t quant_error = 0;
 	for (int y=0;y<DHEIGHT;y++) {
 		for (int x=0;x<DWIDTH;x++) {
 			uint16_t idx = (y*DWIDTH)+x;
@@ -163,13 +171,13 @@ void dither_framebuffer()
 			framebuffer[idx] = new_pix;
 			quant_error = old_pix-new_pix;
 			if (x != (DWIDTH-1))
-				framebuffer[idx+1] += quant_error * 0.4375;
+				framebuffer[idx+1] = clamp(framebuffer[idx+1] + (quant_error * 7) / 16,0,255);
 			if (y != (DHEIGHT-1)) {
 				if (x != 0)
-					framebuffer[idx+DWIDTH-1] += quant_error * 0.1875;
-				framebuffer[idx+DWIDTH] += quant_error * 0.3125;
+					framebuffer[idx+DWIDTH-1] = clamp(framebuffer[idx+DWIDTH-1] + (quant_error * 3) / 16,0,255);
+				framebuffer[idx+DWIDTH] = clamp(framebuffer[idx+DWIDTH] + (quant_error * 5) / 16,0,255);
 				if (x != (DWIDTH-1))
-					framebuffer[idx+DWIDTH+1] += quant_error * 0.0625;
+					framebuffer[idx+DWIDTH+1] = clamp(framebuffer[idx+DWIDTH+1] + quant_error / 16,0,255);
 			}
 			if (new_pix)
 				dpixel(x,y,C_BLACK);
